@@ -1,269 +1,305 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConnectPay – Secure B2B Payment Infrastructure</title>
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
-    <!-- Embedded Styles -->
-    <style>
-        /* Design Tokens */
-        :root {
-            --clr-primary: #2563eb;
-            --clr-primary-dark: #1e40af;
-            --clr-primary-light: #3b82f6;
-            --clr-bg: #f8fafc;
-            --clr-bg-alt: #ffffff;
-            --clr-text: #111827;
-            --clr-text-muted: #6b7280;
-            --radius: 8px;
-            --radius-lg: 12px;
-            --space: 1rem;
-            --space-lg: 2rem;
-            --space-xl: 3rem;
-            --transition: 0.25s ease;
-            --shadow: 0 4px 12px rgba(0,0,0,0.05);
-            --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConnectPay – Instant, Low-Cost Bank Payments for LATAM</title>
 
-        /* Reset */
-        *, *::before, *::after { box-sizing: border-box; }
-        body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--clr-bg); color: var(--clr-text); line-height: 1.6; }
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        /* Typography */
-        h1, h2, h3 { margin: 0 0 var(--space); font-weight: 700; line-height: 1.2; }
-        h1 { font-size: clamp(2rem, 5vw, 3rem); }
-        h2 { font-size: clamp(1.5rem, 4vw, 2.25rem); }
-        h3 { font-size: 1.125rem; }
-        p { margin: 0 0 var(--space); }
-        a { color: var(--clr-primary); text-decoration: none; }
-        a:hover { text-decoration: underline; }
+  <style>
+    :root {
+      --clr-primary: #2563eb;
+      --clr-primary-dark: #1e40af;
+      --clr-bg: #f8fafc;
+      --clr-bg-alt: #ffffff;
+      --clr-text: #111827;
+      --clr-text-muted: #6b7280;
+      --radius: 8px;
+      --radius-lg: 12px;
+      --transition: 0.25s ease;
+      --shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
 
-        /* Layout */
-        .container { width: 90%; max-width: 1200px; margin-inline: auto; padding-block: var(--space-xl); }
-        .grid { display: grid; gap: var(--space-lg); }
-        .flex { display: flex; align-items: center; gap: var(--space); }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--clr-bg);
+      color: var(--clr-text);
+      line-height: 1.6;
+    }
 
-        /* Buttons */
-        .btn {
-            --btn-bg: var(--clr-primary);
-            --btn-color: #fff;
-            display: inline-flex; align-items: center; justify-content: center;
-            min-height: 44px; padding: 0.75rem 1.5rem;
-            border: none; border-radius: var(--radius);
-            background: var(--btn-bg); color: var(--btn-color);
-            font-size: 1rem; font-weight: 600;
-            cursor: pointer; transition: var(--transition);
-        }
-        .btn:hover { background: var(--clr-primary-dark); text-decoration: none; }
-        .btn--ghost { --btn-bg: transparent; --btn-color: var(--clr-primary); border: 2px solid var(--clr-primary); }
-        .btn--ghost:hover { background: var(--clr-primary); color: #fff; }
+    h1, h2, h3 { margin: 0 0 1rem; font-weight: 700; line-height: 1.2; }
+    h1 { font-size: clamp(2rem, 5vw, 3rem); color: var(--clr-primary); }
+    h2 { font-size: clamp(1.5rem, 4vw, 2.25rem); }
+    h3 { font-size: 1.125rem; }
+    p { margin: 0 0 1rem; color: var(--clr-text-muted); }
 
-        /* Header */
-        header {
-            background: var(--clr-bg-alt);
-            border-bottom: 1px solid #e5e7eb;
-            position: sticky; top: 0; z-index: 100;
-        }
-        .nav {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: var(--space) 0;
-        }
-        .nav__logo { font-size: 1.25rem; font-weight: 800; color: var(--clr-primary); }
-        .nav__links { display: none; gap: var(--space-lg); list-style: none; margin: 0; padding: 0; }
-        @media (min-width: 768px) { .nav__links { display: flex; } }
-        .nav__links a { color: var(--clr-text); font-weight: 500; }
-        .nav__links a:hover { color: var(--clr-primary); text-decoration: none; }
+    a { color: var(--clr-primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-        /* Hero */
-        .hero {
-            display: flex; flex-direction: column; gap: var(--space-lg);
-            padding-block: var(--space-xl);
-        }
-        @media (min-width: 992px) { .hero { flex-direction: row; align-items: center; } }
-        .hero__content { flex: 1; }
-        .hero__actions { display: flex; flex-wrap: wrap; gap: var(--space); margin-top: var(--space-lg); }
-        .hero__media { flex: 1; }
-        .hero__media img {
-            width: 100%; height: auto; border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-        }
+    .container { width: 90%; max-width: 1200px; margin-inline: auto; padding-block: 3rem; }
 
-        /* Services */
-        .services { background: var(--clr-bg-alt); }
-        .service-cards {
-            grid-template-columns: 1fr;
-        }
-        @media (min-width: 768px) { .service-cards { grid-template-columns: repeat(2, 1fr); } }
-        @media (min-width: 992px) { .service-cards { grid-template-columns: repeat(4, 1fr); } }
-        .service-card {
-            background: #fff; border-radius: var(--radius-lg); padding: var(--space-lg);
-            box-shadow: var(--shadow); transition: var(--transition);
-        }
-        .service-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-        .service-card__icon {
-            width: 48px; height: 48px; background: var(--clr-primary-light);
-            color: #fff; border-radius: var(--radius); display: grid; place-items: center; margin-bottom: var(--space);
-            font-size: 1.25rem;
-        }
+    .btn {
+      background: var(--clr-primary);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+    }
+    .btn:hover { background: var(--clr-primary-dark); }
+    .btn--ghost {
+      background: transparent;
+      border: 2px solid var(--clr-primary);
+      color: var(--clr-primary);
+    }
+    .btn--ghost:hover {
+      background: var(--clr-primary);
+      color: #fff;
+    }
 
-        /* Cases */
-        .cases {
-            grid-template-columns: 1fr;
-        }
-        @media (min-width: 768px) { .cases { grid-template-columns: repeat(3, 1fr); } }
-        .case {
-            background: #fff; border-radius: var(--radius-lg); padding: var(--space-lg);
-            box-shadow: var(--shadow);
-        }
-        .case__metric {
-            font-size: 2rem; font-weight: 800; color: var(--clr-primary);
-            margin-bottom: 0.25rem;
-        }
+    header {
+      background: var(--clr-bg-alt);
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+    }
+    .nav__logo { font-weight: 800; font-size: 1.25rem; color: var(--clr-primary); }
+    .nav__links { display: none; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+    @media (min-width: 768px) { .nav__links { display: flex; } }
+    .nav__links a { color: var(--clr-text); font-weight: 500; }
+    .nav__links a:hover { color: var(--clr-primary); }
 
-        /* Contact */
-        .contact { background: var(--clr-bg-alt); }
-        .form {
-            max-width: 600px; margin-inline: auto;
-            display: grid; gap: var(--space);
-        }
-        .form input, .form textarea {
-            width: 100%; min-height: 44px; padding: 0.75rem 1rem;
-            border: 1px solid #d1d5db; border-radius: var(--radius);
-            font-size: 1rem;
-        }
-        .form textarea { resize: vertical; min-height: 120px; }
+    .hero {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding-block: 3rem;
+    }
+    @media (min-width: 992px) { .hero { flex-direction: row; align-items: center; } }
+    .hero__content { flex: 1; }
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+    .hero__media { flex: 1; }
+    .hero__media img {
+      width: 100%;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
 
-        /* Footer */
-        footer {
-            background: var(--clr-text); color: #fff;
-            text-align: center; padding-block: var(--space-lg);
-        }
-        .socials {
-            display: flex; justify-content: center; gap: var(--space); margin-bottom: var(--space);
-        }
-        .socials a {
-            width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%;
-            display: grid; place-items: center; color: #fff; transition: var(--transition);
-        }
-        .socials a:hover { background: var(--clr-primary); text-decoration: none; }
+    .grid { display: grid; gap: 1.5rem; }
 
-        /* Utilities */
-        .text-center { text-align: center; }
-        .section-title { margin-bottom: var(--space-xl); }
-    </style>
+    .services { background: var(--clr-bg-alt); }
+    .service-cards { grid-template-columns: 1fr; }
+    @media (min-width: 768px) { .service-cards { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 992px) { .service-cards { grid-template-columns: repeat(4, 1fr); } }
+    .service-card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: var(--transition);
+    }
+    .service-card:hover { transform: translateY(-4px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+    .service-card__icon {
+      width: 48px; height: 48px;
+      background: var(--clr-primary);
+      color: #fff;
+      border-radius: var(--radius);
+      display: grid; place-items: center;
+      margin: 0 auto 1rem;
+      font-size: 1.25rem;
+    }
+
+    .case-grid { grid-template-columns: 1fr; }
+    @media (min-width: 768px) { .case-grid { grid-template-columns: repeat(3, 1fr); } }
+    .case {
+      background: #fff;
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+    .case__metric { font-size: 2rem; color: var(--clr-primary); font-weight: 800; }
+
+    form {
+      max-width: 600px;
+      margin-inline: auto;
+      display: grid;
+      gap: 1rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: var(--radius);
+      font-size: 1rem;
+    }
+    textarea { resize: vertical; min-height: 120px; }
+
+    footer {
+      background: var(--clr-text);
+      color: #fff;
+      text-align: center;
+      padding: 2rem 0;
+    }
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .socials a {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.1);
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      transition: var(--transition);
+    }
+    .socials a:hover { background: var(--clr-primary); }
+    .text-center { text-align: center; }
+  </style>
 </head>
 
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav class="nav" aria-label="Primary Navigation">
-                <div class="nav__logo">ConnectPay</div>
-                <ul class="nav__links">
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#cases">Case Studies</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
+  <header>
+    <div class="container">
+      <nav class="nav">
+        <div class="nav__logo">ConnectPay</div>
+        <ul class="nav__links">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#plans">Plans</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero container">
+      <div class="hero__content">
+        <h1>Instant, Low-Cost Bank Payments for LATAM</h1>
+        <p>ConnectPay provides a bank-to-bank API that enables merchants to accept instant, chargeback-free payments directly from customer accounts—improving margins, trust, and cash flow.</p>
+        <div class="hero__actions">
+          <a href="#contact" class="btn">Request a Demo</a>
+          <a href="#services" class="btn btn--ghost">Explore Features</a>
         </div>
-    </header>
+      </div>
+      <div class="hero__media">
+        <img src="https://placehold.co/600x400/2563eb/ffffff?text=Bank-to-Bank+API" alt="ConnectPay API Illustration">
+      </div>
+    </section>
 
-    <main>
-        <!-- Hero -->
-        <section class="hero container" id="home">
-            <div class="hero__content">
-                <h1>Secure, Seamless B2B Payments</h1>
-                <p>ConnectPay delivers enterprise-grade payment infrastructure that scales with your business—fast onboarding, global coverage, and bullet-proof compliance.</p>
-                <div class="hero__actions">
-                    <a href="#contact" class="btn">Book a Demo</a>
-                    <a href="#services" class="btn btn--ghost">Explore Services</a>
-                </div>
-            </div>
-            <div class="hero__media">
-                <img src="https://placehold.co/600x400/2563eb/ffffff?text=Secure+Payments" alt="Secure Payments Illustration">
-            </div>
-        </section>
-
-        <!-- Services -->
-        <section class="services container" id="services">
-            <h2 class="section-title text-center">What We Do</h2>
-            <div class="grid service-cards">
-                <article class="service-card">
-                    <div class="service-card__icon"><i class="fa-solid fa-shield-halved"></i></div>
-                    <h3>Fraud Protection</h3>
-                    <p>AI-driven risk scoring and real-time monitoring keep your transactions safe 24/7.</p>
-                </article>
-                <article class="service-card">
-                    <div class="service-card__icon"><i class="fa-solid fa-globe"></i></div>
-                    <h3>Global Payouts</h3>
-                    <p>Send funds to 120+ countries in local currencies with same-day settlement.</p>
-                </article>
-                <article class="service-card">
-                    <div class="service-card__icon"><i class="fa-solid fa-plug"></i></div>
-                    <h3>Easy Integration</h3>
-                    <p>RESTful APIs and drop-in UI components get you live in hours, not weeks.</p>
-                </article>
-                <article class="service-card">
-                    <div class="service-card__icon"><i class="fa-solid fa-chart-line"></i></div>
-                    <h3>Real-Time Analytics</h3>
-                    <p>Track payment performance, fees, and customer behavior from a single dashboard.</p>
-                </article>
-            </div>
-        </section>
-
-        <!-- Case Studies -->
-        <section class="container" id="cases">
-            <h2 class="section-title text-center">Client Results</h2>
-            <div class="grid cases">
-                <article class="case">
-                    <div class="case__metric">+38%</div>
-                    <h3>Conversion Lift</h3>
-                    <p>Marketplace giant reduced checkout abandonment with localized payment methods.</p>
-                </article>
-                <article class="case">
-                    <div class="case__metric">-52%</div>
-                    <h3>Fraud Losses</h3>
-                    <p>SaaS provider cut chargebacks by half using our adaptive risk engine.</p>
-                </article>
-                <article class="case">
-                    <div class="case__metric">6 Days</div>
-                    <h3>Integration Time</h3>
-                    <p>Logistics startup went live globally in under a week—no dedicated dev team needed.</p>
-                </article>
-            </div>
-        </section>
-
-        <!-- Contact -->
-        <section class="contact container" id="contact">
-            <h2 class="section-title text-center">Get in Touch</h2>
-            <form class="form" action="https://formspree.io/f/mqaybenl" method="POST">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="email" placeholder="Work Email" required>
-                <input type="text" name="company" placeholder="Company" required>
-                <textarea name="message" placeholder="Tell us about your payment needs" required></textarea>
-                <button type="submit" class="btn">Send Message</button>
-            </form>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="socials">
-                <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-            </div>
-            <p>&copy; <span id="year"></span> ConnectPay. All rights reserved.</p>
+    <!-- SERVICES -->
+    <section id="services" class="services container">
+      <h2 class="text-center">Why ConnectPay</h2>
+      <div class="grid service-cards">
+        <div class="service-card">
+          <div class="service-card__icon"><i class="fa-solid fa-bolt"></i></div>
+          <h3>Instant Settlements</h3>
+          <p>Receive funds in real time—no card networks, no delays, no chargebacks.</p>
         </div>
-    </footer>
+        <div class="service-card">
+          <div class="service-card__icon"><i class="fa-solid fa-plug"></i></div>
+          <h3>Single API Integration</h3>
+          <p>Access multiple banks in Argentina and LATAM with one connection and one contract.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-card__icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <h3>Fraud Protection</h3>
+          <p>AI-driven monitoring and KYC automation ensure secure, compliant transactions.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-card__icon"><i class="fa-solid fa-chart-line"></i></div>
+          <h3>Analytics & Insights</h3>
+          <p>Data-rich dashboards for tracking settlements, fees, and business performance.</p>
+        </div>
+      </div>
+    </section>
 
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
+    <!-- PLANS -->
+    <section id="plans" class="container">
+      <h2 class="text-center">Pricing Plans</h2>
+      <div class="grid service-cards">
+        <div class="service-card">
+          <h3>Standard Plan</h3>
+          <p><strong>0.3%</strong> per transaction – no fixed costs.</p>
+          <p>Includes instant bank-to-bank payments, automatic reconciliation, and dashboard access.</p>
+        </div>
+        <div class="service-card">
+          <h3>Enterprise Plan</h3>
+          <p><strong>0.5–0.7%</strong> per transaction – optional fixed payout fee.</p>
+          <p>Includes analytics, ERP integration, cross-border routing, and dedicated account support.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE STUDIES -->
+    <section class="container">
+      <h2 class="text-center">Proven Results</h2>
+      <div class="grid case-grid">
+        <div class="case">
+          <div class="case__metric">+38%</div>
+          <h3>Conversion Lift</h3>
+          <p>Marketplace giant reduced checkout abandonment by introducing instant bank payments.</p>
+        </div>
+        <div class="case">
+          <div class="case__metric">-52%</div>
+          <h3>Lower Fraud Losses</h3>
+          <p>SaaS platform cut chargebacks by half using ConnectPay’s adaptive risk engine.</p>
+        </div>
+        <div class="case">
+          <div class="case__metric">6 Days</div>
+          <h3>Integration Time</h3>
+          <p>SME merchants went live in under a week using our unified API sandbox environment.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="services container">
+      <h2 class="text-center">Get in Touch</h2>
+      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Work Email" required>
+        <input type="text" name="company" placeholder="Company" required>
+        <textarea name="message" placeholder="Tell us about your payment needs" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="socials">
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      </div>
+      <p>&copy; <span id="year"></span> ConnectPay. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
