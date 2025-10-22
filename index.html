@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ConnectPay – Instant, Low-Cost Bank Payments for LATAM</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
     :root {
-      --clr-primary: #2563eb;
-      --clr-primary-dark: #1e40af;
+      --clr-primary: #163c3a; /* extracted dark green from screenshot */
+      --clr-primary-dark: #0f2a28;
       --clr-bg: #f8fafc;
       --clr-bg-alt: #ffffff;
       --clr-text: #111827;
@@ -79,7 +79,15 @@
       justify-content: space-between;
       padding: 1rem 0;
     }
-    .nav__logo { font-weight: 800; font-size: 1.25rem; color: var(--clr-primary); }
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .nav__logo img {
+      height: 36px;
+      width: auto;
+    }
     .nav__links { display: none; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
     @media (min-width: 768px) { .nav__links { display: flex; } }
     .nav__links a { color: var(--clr-text); font-weight: 500; }
@@ -182,7 +190,9 @@
   <header>
     <div class="container">
       <nav class="nav">
-        <div class="nav__logo">ConnectPay</div>
+        <div class="nav__logo">
+          <img src="ConnectPay%20Logo.png" alt="ConnectPay Logo">
+        </div>
         <ul class="nav__links">
           <li><a href="#services">Services</a></li>
           <li><a href="#plans">Plans</a></li>
@@ -204,7 +214,7 @@
         </div>
       </div>
       <div class="hero__media">
-        <img src="https://placehold.co/600x400/2563eb/ffffff?text=Bank-to-Bank+API" alt="ConnectPay API Illustration">
+        <img src="https://placehold.co/600x400/163c3a/ffffff?text=Bank-to-Bank+API" alt="ConnectPay API Illustration">
       </div>
     </section>
 
@@ -225,12 +235,12 @@
         <div class="service-card">
           <div class="service-card__icon"><i class="fa-solid fa-shield-halved"></i></div>
           <h3>Fraud Protection</h3>
-          <p>AI-driven monitoring and KYC automation ensure secure, compliant transactions.</p>
+          <p>AI-driven monitoring and automated compliance keep your business secure.</p>
         </div>
         <div class="service-card">
           <div class="service-card__icon"><i class="fa-solid fa-chart-line"></i></div>
           <h3>Analytics & Insights</h3>
-          <p>Data-rich dashboards for tracking settlements, fees, and business performance.</p>
+          <p>Data-rich dashboards for tracking settlements, fees, and performance in real time.</p>
         </div>
       </div>
     </section>
