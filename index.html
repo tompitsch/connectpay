@@ -1,574 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ConnectPay – Instant, Low-Cost Bank Payments for LATAM</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConnectPay – Bank-to-Bank Payments for Argentina</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
     :root {
-      --clr-primary: #0f766e;       /* teal */
-      --clr-primary-dark: #115e59;
-      --clr-accent: #f97316;        /* subtle accent */
-      --clr-bg: #f3f4f6;
-      --clr-bg-alt: #ffffff;
-      --clr-border: #e5e7eb;
-      --clr-text: #020617;
-      --clr-text-muted: #6b7280;
-      --radius-sm: 6px;
-      --radius: 10px;
+      --clr-teal: #0d9488;
+      --clr-teal-dark: #0f766e;
+      --clr-slate: #f1f5f9;
+      --clr-slate-card: #ffffff;
+      --clr-slate-border: #e2e8f0;
+      --clr-text: #0f172a;
+      --clr-text-muted: #64748b;
+      --radius: 9999px; /* pill radius */
       --radius-lg: 16px;
       --transition: 0.25s ease;
-      --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.06);
+      --shadow: 0 2px 8px rgba(0,0,0,0.04);
+      --shadow-hover: 0 4px 16px rgba(0,0,0,0.06);
     }
 
     *, *::before, *::after { box-sizing: border-box; }
-
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: radial-gradient(circle at top left, #e0f2fe 0, #f3f4f6 40%, #f3f4f6 100%);
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(circle at top, var(--clr-slate) 0%, #ffffff 100%);
       color: var(--clr-text);
       line-height: 1.6;
     }
 
-    h1, h2, h3 {
-      margin: 0 0 1rem;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-    h1 { font-size: clamp(2.25rem, 4vw, 3.25rem); letter-spacing: -0.04em; }
-    h2 { font-size: clamp(1.75rem, 3vw, 2.25rem); letter-spacing: -0.03em; }
-    h3 { font-size: 1.1rem; }
-
+    h1, h2, h3 { margin: 0 0 1rem; font-weight: 700; line-height: 1.2; }
+    h1 { font-size: clamp(2rem, 5vw, 3rem); color: var(--clr-text); }
+    h2 { font-size: clamp(1.5rem, 4vw, 2.25rem); }
+    h3 { font-size: 1.125rem; }
     p { margin: 0 0 1rem; color: var(--clr-text-muted); }
 
-    a { color: inherit; text-decoration: none; }
-    a:hover { text-decoration: none; }
+    a { color: var(--clr-teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-    .container {
-      width: 92%;
-      max-width: 1120px;
-      margin: 0 auto;
-      padding-block: 3rem;
-    }
+    .container { width: 90%; max-width: 1200px; margin-inline: auto; padding-block: 3rem; }
 
     .btn {
-      background: var(--clr-primary);
+      background: var(--clr-teal);
       color: #fff;
-      padding: 0.8rem 1.6rem;
+      padding: 0.75rem 1.75rem;
       border: none;
-      border-radius: 999px;
+      border-radius: var(--radius);
       font-weight: 600;
       cursor: pointer;
       transition: var(--transition);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.4rem;
       min-height: 44px;
-      font-size: 0.95rem;
-      white-space: nowrap;
+      box-shadow: var(--shadow);
     }
     .btn:hover {
-      background: var(--clr-primary-dark);
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(15, 118, 110, 0.25);
+      background: var(--clr-teal-dark);
+      box-shadow: var(--shadow-hover);
+      text-decoration: none;
     }
-
     .btn--ghost {
-      background: #ecfeff;
-      color: var(--clr-primary-dark);
-      border: 1px solid #a5f3fc;
-      box-shadow: none;
+      background: transparent;
+      border: 1px solid var(--clr-teal);
+      color: var(--clr-teal);
     }
     .btn--ghost:hover {
-      background: #cffafe;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(8, 47, 73, 0.15);
+      background: var(--clr-teal);
+      color: #fff;
+      text-decoration: none;
     }
 
     header {
-      backdrop-filter: blur(10px);
-      background: rgba(248, 250, 252, 0.9);
-      border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--clr-slate-border);
       position: sticky;
       top: 0;
-      z-index: 50;
-    }
-    .nav-wrap {
-      width: 92%;
-      max-width: 1120px;
-      margin: 0 auto;
+      z-index: 100;
     }
     .nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-block: 0.9rem;
+      padding: 1rem 0;
     }
     .nav__logo {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
+      font-weight: 700;
+      color: var(--clr-text);
     }
     .nav__logo img {
       height: 32px;
       width: auto;
-      display: block;
     }
-    .nav__brand-text {
-      font-weight: 650;
-      font-size: 1rem;
-      letter-spacing: -0.04em;
-      color: #0f172a;
-    }
-
-    .nav__links {
-      display: none;
-      gap: 1.75rem;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      font-size: 0.95rem;
-    }
-    @media (min-width: 768px) {
-      .nav__links { display: flex; }
-    }
+    .nav__links { display: none; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+    @media (min-width: 768px) { .nav__links { display: flex; } }
     .nav__links a {
-      color: #475569;
+      color: var(--clr-text-muted);
       font-weight: 500;
       position: relative;
-      padding-bottom: 0.1rem;
     }
     .nav__links a::after {
-      content: "";
+      content: '';
       position: absolute;
       left: 0;
-      bottom: -0.25rem;
+      bottom: -4px;
       width: 0;
       height: 2px;
-      background: var(--clr-primary);
-      transition: width 0.18s ease;
+      background: var(--clr-teal);
+      transition: var(--transition);
     }
-    .nav__links a:hover {
-      color: #0f172a;
-    }
-    .nav__links a:hover::after {
-      width: 100%;
-    }
+    .nav__links a:hover::after { width: 100%; }
+    .nav__links a:hover { color: var(--clr-teal); text-decoration: none; }
 
-    /* HERO */
     .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.15fr);
-      gap: 2.5rem;
-      padding-top: 2.5rem;
-      padding-bottom: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding-block: 3rem;
     }
-    @media (min-width: 960px) {
-      .hero {
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-        align-items: center;
-      }
-    }
+    @media (min-width: 992px) { .hero { flex-direction: row; align-items: center; } }
+    .hero__content { flex: 1; }
     .hero__eyebrow {
-      font-size: 0.8rem;
+      display: inline-block;
+      font-size: 0.875rem;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--clr-primary-dark);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: #ecfeff;
-      border-radius: 999px;
+      color: var(--clr-teal);
+      margin-bottom: 0.5rem;
+    }
+    .hero__pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    .pill {
+      background: var(--clr-slate);
+      color: var(--clr-text-muted);
       padding: 0.25rem 0.75rem;
-      margin-bottom: 0.75rem;
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      font-weight: 500;
     }
-    .hero__eyebrow span.dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--clr-accent);
-    }
-
-    .hero__title {
-      margin-bottom: 1rem;
-    }
-    .hero__subtitle {
-      max-width: 32rem;
-      font-size: 0.98rem;
-    }
-    .hero__meta {
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+    .hero__media { flex: 1; }
+    .metrics-card {
+      background: var(--clr-slate-card);
+      border: 1px solid var(--clr-slate-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow);
       display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      align-items: center;
-      margin-top: 1.5rem;
-    }
-    .hero__meta-row {
-      display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 1rem;
     }
-    .hero__pill {
-      font-size: 0.8rem;
+    .metrics-card__header {
+      font-size: 0.875rem;
       color: var(--clr-text-muted);
     }
-    .hero__pill strong {
-      color: #0f172a;
-      font-weight: 600;
-    }
-
-    .hero__actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.9rem;
-      margin-top: 1.75rem;
-    }
-
-    .hero__media {
-      position: relative;
-      border-radius: var(--radius-lg);
-      padding: 1.25rem;
-      background: linear-gradient(145deg, #0f172a, #0f766e);
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-    }
-    .hero__media::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 10% 0, rgba(59,130,246,0.4), transparent 55%);
-      opacity: 0.7;
-      pointer-events: none;
-    }
-    .hero__media-main {
-      position: relative;
-      z-index: 1;
-      background: rgba(15,23,42,0.55);
-      border-radius: var(--radius);
-      padding: 1rem 1.1rem;
-      border: 1px solid rgba(148,163,184,0.35);
-      color: #e5e7eb;
-      font-size: 0.78rem;
-    }
-    .hero__media-header {
+    .metrics-card__row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.6rem;
+    }
+    .metrics-card__label {
+      font-size: 0.875rem;
+      color: var(--clr-text-muted);
+    }
+    .metrics-card__value {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+    .metrics-card__badge {
+      display: inline-block;
+      background: var(--clr-teal);
+      color: #fff;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius);
       font-size: 0.75rem;
-    }
-    .hero__media-header span {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-    .hero__media-header i {
-      color: #22c55e;
-    }
-    .hero__media-metrics {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.75rem;
-      margin-top: 0.6rem;
-    }
-    .hero__media-metric {
-      padding: 0.55rem 0.6rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(148,163,184,0.4);
-    }
-    .hero__media-metric-label {
-      font-size: 0.7rem;
-      color: #9ca3af;
-    }
-    .hero__media-metric-value {
-      font-size: 0.95rem;
       font-weight: 600;
-      color: #f9fafb;
     }
 
-    /* SECTION UTILS */
-    .section {
-      padding-block: 3rem;
-    }
+    .grid { display: grid; gap: 1.5rem; }
 
-    .section-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .section-eyebrow {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--clr-text-muted);
-      margin-bottom: 0.25rem;
-    }
-    .section-title {
-      margin-bottom: 0.25rem;
-    }
-    .section-subtitle {
-      max-width: 34rem;
-      margin: 0.5rem auto 0;
-      font-size: 0.95rem;
-    }
-
-    .grid {
-      display: grid;
-      gap: 1.5rem;
-    }
-
-    /* SERVICES */
-    #services {
-      background: var(--clr-bg-alt);
-      border-radius: 20px;
-      box-shadow: var(--shadow-soft);
-      margin-bottom: 3rem;
-      padding-inline: min(2.5rem, 5vw);
-    }
-
-    .feature-grid {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
-    @media (min-width: 768px) {
-      .feature-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    }
-
-    .feature-card {
-      background: #f9fafb;
-      border-radius: var(--radius);
-      border: 1px solid var(--clr-border);
-      padding: 1.5rem 1.4rem;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-    .feature-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom right, rgba(15,118,110,0.04), transparent);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-    .feature-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-soft);
-      border-color: #cbd5f5;
-    }
-    .feature-card:hover::after {
-      opacity: 1;
-    }
-    .feature-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      background: #ecfeff;
-      color: var(--clr-primary-dark);
-      margin-bottom: 1rem;
-    }
-    .feature-card h3 {
-      margin-bottom: 0.4rem;
-      font-size: 1.05rem;
-    }
-    .feature-card p {
-      font-size: 0.9rem;
-    }
-
-    /* PLANS */
-    #plans .plans-grid {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-      max-width: 720px;
-      margin-inline: auto;
-    }
-    @media (min-width: 768px) {
-      #plans .plans-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    .plan-card {
-      background: var(--clr-bg-alt);
+    .services { background: transparent; }
+    .service-cards { grid-template-columns: 1fr; }
+    @media (min-width: 768px) { .service-cards { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 992px) { .service-cards { grid-template-columns: repeat(4, 1fr); } }
+    .service-card {
+      background: var(--clr-slate-card);
+      border: 1px solid var(--clr-slate-border);
+      padding: 2rem;
       border-radius: var(--radius-lg);
-      border: 1px solid var(--clr-border);
-      padding: 1.75rem 1.6rem;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+      box-shadow: var(--shadow);
+      text-align: left;
+      transition: var(--transition);
+    }
+    .service-card:hover {
+      box-shadow: var(--shadow-hover);
+      background: linear-gradient(to bottom, #ffffff, #f8fafc);
+    }
+    .service-card__icon {
+      width: 40px; height: 40px;
+      background: var(--clr-teal);
+      color: #fff;
+      border-radius: var(--radius);
+      display: grid; place-items: center;
+      margin-bottom: 1rem;
+      font-size: 1.125rem;
+    }
+
+    .pricing { background: transparent; }
+    .pricing-cards { grid-template-columns: 1fr; }
+    @media (min-width: 768px) { .pricing-cards { grid-template-columns: repeat(2, 1fr); } }
+    .pricing-card {
+      background: var(--clr-slate-card);
+      border: 1px solid var(--clr-slate-border);
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
       position: relative;
     }
-    .plan-card--highlight {
-      border-color: rgba(15,118,110,0.4);
-      box-shadow: 0 16px 40px rgba(15,118,110,0.16);
+    .pricing-card--highlight {
+      border-color: var(--clr-teal);
+      box-shadow: 0 0 0 2px var(--clr-teal), var(--shadow-hover);
     }
-    .plan-badge {
+    .pricing-card__badge {
       position: absolute;
-      top: 1.2rem;
-      right: 1.4rem;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      background: #ecfeff;
-      color: var(--clr-primary-dark);
-      padding: 0.25rem 0.6rem;
-      border-radius: 999px;
-    }
-    .plan-name {
-      margin-bottom: 0.4rem;
-    }
-    .plan-price {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--clr-primary-dark);
-      margin-bottom: 0.2rem;
-    }
-    .plan-note {
-      font-size: 0.8rem;
-      color: var(--clr-text-muted);
-      margin-bottom: 1rem;
-    }
-    .plan-features {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 1.25rem;
-      font-size: 0.9rem;
-    }
-    .plan-features li {
-      display: flex;
-      gap: 0.5rem;
-      align-items: flex-start;
-      margin-bottom: 0.4rem;
-      color: var(--clr-text-muted);
-    }
-    .plan-features i {
-      margin-top: 0.2rem;
-      color: #16a34a;
-      font-size: 0.8rem;
-    }
-
-    /* CASE STUDIES */
-    .case-grid {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-      max-width: 960px;
-      margin-inline: auto;
-    }
-    @media (min-width: 768px) {
-      .case-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    }
-
-    .case {
-      background: var(--clr-bg-alt);
+      top: 1rem; right: 1rem;
+      background: var(--clr-teal);
+      color: #fff;
+      padding: 0.25rem 0.75rem;
       border-radius: var(--radius);
-      border: 1px solid var(--clr-border);
-      padding: 1.6rem 1.4rem;
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .pricing-card__title { margin: 0; }
+    .pricing-card__price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--clr-text);
+    }
+    .pricing-card__features {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      flex: 1;
+    }
+    .pricing-card__features li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--clr-text-muted);
+    }
+    .pricing-card__features i {
+      color: var(--clr-teal);
+      font-size: 0.875rem;
+    }
+    .pricing-card__cta {
+      margin-top: 1rem;
+    }
+
+    .use-cases { background: transparent; }
+    .case-grid { grid-template-columns: 1fr; }
+    @media (min-width: 768px) { .case-grid { grid-template-columns: repeat(3, 1fr); } }
+    .case {
+      background: var(--clr-slate-card);
+      border: 1px solid var(--clr-slate-border);
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
     }
     .case__metric {
-      font-size: 1.7rem;
-      font-weight: 700;
-      color: var(--clr-primary-dark);
-      margin-bottom: 0.4rem;
-    }
-    .case h3 {
-      margin-bottom: 0.4rem;
-      font-size: 1rem;
-    }
-    .case p {
-      font-size: 0.9rem;
-    }
-
-    /* CONTACT */
-    #contact {
-      background: var(--clr-bg-alt);
-      border-radius: 18px;
-      box-shadow: var(--shadow-soft);
-      margin-bottom: 3rem;
-      padding-inline: min(2.5rem, 5vw);
+      font-size: 2rem;
+      color: var(--clr-teal);
+      font-weight: 800;
     }
 
     form {
-      max-width: 540px;
+      max-width: 600px;
       margin-inline: auto;
       display: grid;
       gap: 1rem;
-      margin-top: 1.5rem;
     }
     input, textarea {
       width: 100%;
       padding: 0.75rem 1rem;
-      border: 1px solid var(--clr-border);
-      border-radius: var(--radius-sm);
-      font-size: 0.95rem;
-      background: #f9fafb;
-      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      border: 1px solid var(--clr-slate-border);
+      border-radius: var(--radius-lg);
+      font-size: 1rem;
+      background: var(--clr-slate-card);
+      transition: var(--transition);
     }
     input:focus, textarea:focus {
       outline: none;
-      border-color: var(--clr-primary);
-      box-shadow: 0 0 0 1px rgba(15, 118, 110, 0.35);
-      background: #ffffff;
+      border-color: var(--clr-teal);
+      box-shadow: 0 0 0 2px var(--clr-teal);
     }
     textarea { resize: vertical; min-height: 120px; }
 
-    .text-center { text-align: center; }
-
     footer {
-      background: #020617;
-      color: #e5e7eb;
-      padding-block: 1.75rem;
-      margin-top: 1rem;
-    }
-    .footer-inner {
-      width: 92%;
-      max-width: 1120px;
-      margin: 0 auto;
+      background: var(--clr-text);
+      color: #fff;
       text-align: center;
+      padding: 2rem 0;
     }
     .socials {
       display: flex;
       justify-content: center;
-      gap: 0.75rem;
-      margin-bottom: 0.9rem;
+      gap: 1rem;
+      margin-bottom: 1rem;
     }
     .socials a {
       width: 36px;
       height: 36px;
-      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(255,255,255,0.2);
       display: grid;
       place-items: center;
-      border-radius: 999px;
-      color: #e5e7eb;
-      border: 1px solid rgba(51,65,85,0.8);
+      border-radius: 50%;
+      color: #fff;
       transition: var(--transition);
-      font-size: 0.9rem;
     }
     .socials a:hover {
-      background: #0f172a;
-      transform: translateY(-1px);
-      border-color: rgba(148,163,184,1);
+      background: var(--clr-teal);
+      border-color: var(--clr-teal);
+      text-decoration: none;
     }
-    footer p {
-      margin: 0;
-      font-size: 0.8rem;
-      color: #9ca3af;
-    }
+    .text-center { text-align: center; }
   </style>
 </head>
 
 <body>
   <header>
-    <div class="nav-wrap">
+    <div class="container">
       <nav class="nav">
         <div class="nav__logo">
           <img src="ConnectPay%20Logo.png" alt="ConnectPay Logo">
-          <span class="nav__brand-text">ConnectPay</span>
+          <span>ConnectPay</span>
         </div>
         <ul class="nav__links">
-          <li><a href="#services">Product</a></li>
-          <li><a href="#plans">Pricing</a></li>
+          <li><a href="#product">Product</a></li>
+          <li><a href="#pricing">Pricing</a></li>
           <li><a href="#contact">Talk to us</a></li>
         </ul>
       </nav>
@@ -579,201 +361,133 @@
     <!-- HERO -->
     <section class="hero container">
       <div class="hero__content">
-        <div class="hero__eyebrow">
-          <span class="dot"></span>
-          <span>Bank-to-bank payments for Argentina</span>
+        <span class="hero__eyebrow">Bank-to-bank payments for Argentina</span>
+        <h1>Instant, Low-Cost Bank Payments for LATAM</h1>
+        <p>ConnectPay provides a bank-to-bank API that enables merchants to accept instant, chargeback-free payments directly from customer accounts—improving margins, trust, and cash flow.</p>
+        <div class="hero__pills">
+          <span class="pill">0.3% per tx</span>
+          <span class="pill">Real-time settlement</span>
         </div>
-        <h1 class="hero__title">Instant, low-cost bank payments for LATAM merchants.</h1>
-        <p class="hero__subtitle">
-          ConnectPay provides a bank-to-bank API that enables merchants to accept instant, chargeback-free payments
-          directly from customer accounts—improving margins, cash flow, and trust at checkout.
-        </p>
-
-        <div class="hero__meta">
-          <div class="hero__meta-row">
-            <div class="hero__pill"><strong>0.3%</strong> per transaction, no fixed fee</div>
-            <div class="hero__pill"><strong>Real-time</strong> settlement into your bank</div>
-          </div>
-        </div>
-
         <div class="hero__actions">
-          <a href="#contact" class="btn">
-            Request a demo
-            <i class="fa-solid fa-arrow-right"></i>
-          </a>
-          <a href="#services" class="btn btn--ghost">
-            View how it works
-          </a>
+          <a href="#contact" class="btn">Request a demo</a>
+          <a href="#product" class="btn btn--ghost">View how it works</a>
         </div>
       </div>
-
       <div class="hero__media">
-        <div class="hero__media-main">
-          <div class="hero__media-header">
-            <span>
-              <i class="fa-solid fa-circle-check"></i>
-              <span>First settlement</span>
-            </span>
-            <span>Today · 14:32</span>
+        <div class="metrics-card">
+          <div class="metrics-card__header">Settlement Event</div>
+          <div class="metrics-card__row">
+            <span class="metrics-card__label">Amount</span>
+            <span class="metrics-card__value">ARS 12,500</span>
           </div>
-          <p>Payment from <strong>E-commerce AR</strong> settled via bank-to-bank API.</p>
-          <div class="hero__media-metrics">
-            <div class="hero__media-metric">
-              <div class="hero__media-metric-label">Fee</div>
-              <div class="hero__media-metric-value">0.3%</div>
-            </div>
-            <div class="hero__media-metric">
-              <div class="hero__media-metric-label">Settlement time</div>
-              <div class="hero__media-metric-value">&lt; 10s</div>
-            </div>
-            <div class="hero__media-metric">
-              <div class="hero__media-metric-label">Chargebacks</div>
-              <div class="hero__media-metric-value">0</div>
-            </div>
+          <div class="metrics-card__row">
+            <span class="metrics-card__label">Fee</span>
+            <span class="metrics-card__value">ARS 37.5 (0.3%)</span>
+          </div>
+          <div class="metrics-card__row">
+            <span class="metrics-card__label">Status</span>
+            <span class="metrics-card__badge">Settled</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SERVICES -->
-    <section id="services" class="section container">
-      <div class="section-header">
-        <div class="section-eyebrow">Product</div>
-        <h2 class="section-title">Built for Argentine merchants and platforms</h2>
-        <p class="section-subtitle">
-          ConnectPay aggregates local bank rails into a single API, so you can move away from card fees, payout delays,
-          and fragmented payment providers.
-        </p>
-      </div>
-
-      <div class="grid feature-grid">
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fa-solid fa-bolt"></i></div>
-          <h3>Instant settlements</h3>
-          <p>Receive funds directly in your bank account in real time. No card networks, no batch delays, no chargebacks.</p>
+    <!-- PRODUCT -->
+    <section id="product" class="services container">
+      <h2 class="text-center">Product – Built for Argentine merchants and platforms</h2>
+      <div class="grid service-cards">
+        <div class="service-card">
+          <div class="service-card__icon"><i class="fa-solid fa-bolt"></i></div>
+          <h3>Instant Settlements</h3>
+          <p>Receive funds in real time—no card networks, no delays, no chargebacks.</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fa-solid fa-plug"></i></div>
-          <h3>Single API integration</h3>
-          <p>One integration and one contract to reach multiple banks in Argentina and, over time, across LATAM.</p>
+        <div class="service-card">
+          <div class="service-card__icon"><i class="fa-solid fa-plug"></i></div>
+          <h3>Single API Integration</h3>
+          <p>Access multiple banks in Argentina and LATAM with one connection and one contract.</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
-          <h3>Account-based security</h3>
-          <p>Bank-grade authentication and direct account ownership drastically reduce fraud and dispute risk.</p>
+        <div class="service-card">
+          <div class="service-card__icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <h3>Account-Based Security</h3>
+          <p>AI-driven monitoring and automated compliance keep your business secure.</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div>
-          <h3>Reconciliation & insights</h3>
-          <p>Data-rich dashboards and automatic matching of payments to invoices or orders, ready for your finance team.</p>
+        <div class="service-card">
+          <div class="service-card__icon"><i class="fa-solid fa-chart-line"></i></div>
+          <h3>Reconciliation & Insights</h3>
+          <p>Data-rich dashboards for tracking settlements, fees, and performance in real time.</p>
         </div>
       </div>
     </section>
 
-    <!-- PLANS -->
-    <section id="plans" class="section container">
-      <div class="section-header">
-        <div class="section-eyebrow">Pricing</div>
-        <h2 class="section-title">Transparent pricing for growing teams</h2>
-        <p class="section-subtitle">
-          Fees designed around Argentine margins: variable cost per transaction, no hidden extras, and a clear path to enterprise features.
-        </p>
-      </div>
-
-      <div class="grid plans-grid">
-        <div class="plan-card">
-          <h3 class="plan-name">Standard Plan</h3>
-          <div class="plan-price">0.3% per transaction</div>
-          <div class="plan-note">No fixed monthly fee.</div>
-          <ul class="plan-features">
-            <li><i class="fa-solid fa-check"></i><span>Instant bank-to-bank payments</span></li>
-            <li><i class="fa-solid fa-check"></i><span>Real-time settlement to your bank account</span></li>
-            <li><i class="fa-solid fa-check"></i><span>Unified API across Argentine banks</span></li>
-            <li><i class="fa-solid fa-check"></i><span>Automatic reconciliation and payment status</span></li>
-            <li><i class="fa-solid fa-check"></i><span>Merchant dashboard for operations teams</span></li>
+    <!-- PRICING -->
+    <section id="pricing" class="pricing container">
+      <h2 class="text-center">Transparent pricing for growing teams</h2>
+      <div class="grid pricing-cards">
+        <div class="pricing-card">
+          <h3 class="pricing-card__title">Standard Plan</h3>
+          <div class="pricing-card__price">0.3% per transaction</div>
+          <ul class="pricing-card__features">
+            <li><i class="fa-solid fa-check"></i> Instant bank-to-bank payments</li>
+            <li><i class="fa-solid fa-check"></i> Automatic reconciliation</li>
+            <li><i class="fa-solid fa-check"></i> Dashboard access</li>
           </ul>
-          <button class="btn btn--ghost" type="button" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
-            Talk to sales
-          </button>
+          <a href="#contact" class="btn pricing-card__cta">Talk to sales</a>
         </div>
-
-        <div class="plan-card plan-card--highlight">
-          <div class="plan-badge">For larger volumes</div>
-          <h3 class="plan-name">Enterprise Plan</h3>
-          <div class="plan-price">0.5–0.7% per transaction</div>
-          <div class="plan-note">Optional fixed payout fee per settlement.</div>
-          <ul class="plan-features">
-            <li><i class="fa-solid fa-check"></i><span>All Standard features included</span></li>
-            <li><i class="fa-solid fa-check"></i><span>Advanced analytics and performance reporting</span></li>
-            <li><i class="fa-solid fa-check"></i><span>ERP and accounting integrations</span></li>
-            <li><i class="fa-solid fa-check"></i><span>Cross-border routing across LATAM</span></li>
-            <li><i class="fa-solid fa-check"></i><span>Priority support and dedicated account manager</span></li>
+        <div class="pricing-card pricing-card--highlight">
+          <span class="pricing-card__badge">Recommended</span>
+          <h3 class="pricing-card__title">Enterprise Plan</h3>
+          <div class="pricing-card__price">0.5–0.7% per transaction</div>
+          <ul class="pricing-card__features">
+            <li><i class="fa-solid fa-check"></i> Analytics & ERP integration</li>
+            <li><i class="fa-solid fa-check"></i> Cross-border routing</li>
+            <li><i class="fa-solid fa-check"></i> Dedicated account support</li>
           </ul>
-          <button class="btn" type="button" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
-            Discuss enterprise pricing
-          </button>
+          <a href="#contact" class="btn pricing-card__cta">Discuss enterprise pricing</a>
         </div>
       </div>
     </section>
 
-    <!-- CASE STUDIES -->
-    <section class="section container">
-      <div class="section-header">
-        <div class="section-eyebrow">Use cases</div>
-        <h2 class="section-title">Designed around real payment operations</h2>
-        <p class="section-subtitle">
-          ConnectPay targets mid-sized and enterprise merchants where card fees and settlement delays materially impact P&amp;L.
-        </p>
-      </div>
-
+    <!-- USE CASES -->
+    <section class="use-cases container">
+      <h2 class="text-center">Designed around real payment operations</h2>
       <div class="grid case-grid">
         <div class="case">
-          <div class="case__metric">+38%</div>
-          <h3>Higher checkout conversion</h3>
-          <p>A marketplace reduced abandonment by adding instant bank payments alongside cards in Argentina.</p>
+          <div class="case__metric">Marketplace</div>
+          <h3>Split settlements</h3>
+          <p>Automate vendor payouts and keep commissions in real time.</p>
         </div>
         <div class="case">
-          <div class="case__metric">-52%</div>
-          <h3>Fewer operational disputes</h3>
-          <p>A SaaS platform cut chargeback handling time and fraud losses by moving B2B flows to direct bank transfers.</p>
+          <div class="case__metric">SaaS Platform</div>
+          <h3>Recurring ACH</h3>
+          <p>Lower churn and fees by pulling directly from bank accounts.</p>
         </div>
         <div class="case">
-          <div class="case__metric">6 days</div>
-          <h3>From demo to first value</h3>
-          <p>SME merchants went live in under a week using the sandbox environment and standard payment link flows.</p>
+          <div class="case__metric">SME</div>
+          <h3>Instant checkout</h3>
+          <p>Offer “Pago con Cuenta” at 0.3% and get settled instantly.</p>
         </div>
       </div>
     </section>
 
     <!-- CONTACT -->
-    <section id="contact" class="section container">
-      <div class="section-header">
-        <div class="section-eyebrow">Contact</div>
-        <h2 class="section-title">Discuss your payment flows</h2>
-        <p class="section-subtitle">
-          Share your current fee levels, settlement times, and providers. We will map exactly where direct bank payments can create value.
-        </p>
-      </div>
-
-      <div id="contact-inner" class="section" style="padding-top:0;">
-        <section class="services" style="background:none;padding:0;box-shadow:none;">
-          <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-            <input type="text" name="name" placeholder="Your name" required>
-            <input type="email" name="email" placeholder="Work email" required>
-            <input type="text" name="company" placeholder="Company" required>
-            <textarea name="message" placeholder="Describe your payment volumes and current providers" required></textarea>
-            <button type="submit" class="btn">Send message</button>
-          </form>
-        </section>
-      </div>
+    <section id="contact" class="services container">
+      <h2 class="text-center">Discuss your payment flows</h2>
+      <p class="text-center">Tell us about your volumes and current providers, and we’ll walk you through the migration.</p>
+      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Work Email" required>
+        <input type="text" name="company" placeholder="Company" required>
+        <textarea name="message" placeholder="Describe your payment flows, volumes, and current providers" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
+      </form>
     </section>
   </main>
 
   <footer>
-    <div class="footer-inner">
+    <div class="container">
       <div class="socials">
         <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="#" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
         <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
       </div>
       <p>&copy; <span id="year"></span> ConnectPay. All rights reserved.</p>
